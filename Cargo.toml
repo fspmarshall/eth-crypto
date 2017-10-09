@@ -1,0 +1,10 @@
+[package]
+name = "eth-crypto"
+version = "0.1.0"
+authors = ["Forrest Marshall <forrest@mimirblockchain.solutions>"]
+
+[dependencies]
+lazy_static = "0.2.9"
+tiny-keccak = "1.3.1"
+secp256k1 = "0.7.1"
+
