@@ -13,9 +13,3 @@ pub mod hash;
 pub mod ecc;
 
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-    }
-}
