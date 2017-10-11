@@ -13,7 +13,14 @@ use types::Result;
 
 
 lazy_static! {
-    static ref SECP256K1: Secp256k1 = Secp256k1::new();
+    // initalizes an `secp256k1` context-object.
+    // attempts to randomize the context-object for
+    // side sidechannel resistance if possible.
+    static ref SECP256K1: Secp256k1 = {
+        let mut ctx = Secp256k1::new();
+        if let Ok(mut rng) = OsRng::new() { ctx.randomize(&mut rng); }
+        ctx
+    };
 }
 
 
