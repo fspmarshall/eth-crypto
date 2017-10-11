@@ -51,6 +51,16 @@ macro_rules! impl_byte_array_ext {
                 write!(f, "{}({:?})",stringify!($ident),self.as_ref())
             }
         }
+
+        // manually implement `PartialEq` for comparison operations.
+        impl $crate::std::cmp::PartialEq for $ident {
+            fn eq(&self, other: &$ident) -> bool {
+                self.as_ref() == other.as_ref()
+            }
+        }
+
+        // manually flag type as `Eq` for full equivalence relations.
+        impl $crate::std::cmp::Eq for $ident { }
     }
 }
 

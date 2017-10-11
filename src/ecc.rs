@@ -141,10 +141,8 @@ impl From<SecretKey> for Private {
 
 /// struct representing a public/private keypair on the
 /// `secp256k1` curve.
-pub struct KeyPair {
-    public: PublicKey,
-    secret: SecretKey
-}
+
+
 
 #[cfg(test)]
 mod tests {
