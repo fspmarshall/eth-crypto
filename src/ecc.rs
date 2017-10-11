@@ -100,6 +100,21 @@ impl Signature {
     pub fn get_s(&self) -> &[u8] { &self.0[32..65] }
 }
 
+// convert from the `secp256k1` library's signature object
+// to an ethereum-style signature.
+impl From<RecoverableSignature> for Signature {
+    fn from(itm: RecoverableSignature) -> Self {
+        let mut buf = [0u8;65];
+        let ctx = &SECP256K1; 
+        let (id,body) = itm.serialize_compact(ctx);
+        for (idx,val) in body[0..64].into_iter().enumerate() {
+            buf[idx] = *val;
+        }
+        buf[64] = id.to_i32() as u8;
+        buf.into()
+    }
+}
+
 
 /// an ecc public-key on the `secp256k1` curve.
 pub struct Public([u8;64]);
@@ -129,6 +144,17 @@ pub struct Private([u8;32]);
 
 impl_byte_array!(Private,32);
 
+impl Private {
+    /// sign the hash of some message.
+    pub fn sign(&self, msg: &[u8;32]) -> Result<Signature> {
+        let ctx = &SECP256K1;
+        let sec = SecretKey::from_slice(ctx,self.as_ref())?;
+        let itm = msg.clone().into();
+        let sig = ctx.sign_recoverable(&itm,&sec)?;
+        Ok(sig.into())
+    }
+}
+
 impl From<SecretKey> for Private {
     fn from(key: SecretKey) -> Self {
         let mut buf = [0u8;32];
@@ -139,25 +165,38 @@ impl From<SecretKey> for Private {
     }
 }
 
-/// struct representing a public/private keypair on the
-/// `secp256k1` curve.
 
-
+// -------------------------- tests ----------------------------
 
 #[cfg(test)]
 mod tests {
 
     #[test]
     fn signing() {
+        for _ in 0..7 {
+            use hash::keccak256::hash;
+            use ecc::{keygen,recover};
+            let (public,secret) = keygen().unwrap();
+            let msg = hash("hello world");
+            let sig = secret.sign(&msg).unwrap();
+            let rec = recover(&msg,&sig).unwrap();
+            assert_eq!(public,rec);
+        }
     }
 
     #[test]
     fn addressing() {
+        for _ in 0..7 {
+            use hash::keccak256::hash;
+            use ecc::{keygen,ecrecover,Address};
+            let (public,secret) = keygen().unwrap();
+            let msg = hash("hello world");
+            let sig = secret.sign(&msg).unwrap();
+            let rec = ecrecover(&msg,&sig).unwrap();
+            assert_eq!(Address::from(public),rec);
+        }
     }
 
-    #[test]
-    fn conversion() {
-    }
 }
 
 
