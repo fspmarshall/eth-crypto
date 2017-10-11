@@ -35,5 +35,22 @@ pub mod keccak256 {
         keccak.finalize(&mut buffer);
         buffer
     }
-
+    
 }
+
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    // ensure that we get the same outputs for contiguous
+    // and discontiguous representations of the same bytes.
+    fn keccak256() {
+        use hash::keccak256::{hash,hash_many};
+        let singular = hash("hello world");
+        let multiple = hash_many(&["hello"," ","world"]);
+        assert_eq!(singular,multiple);
+    }
+}
+
+

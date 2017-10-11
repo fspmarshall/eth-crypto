@@ -1,14 +1,19 @@
+//! the `ecc` module contains all types and functions related to
+//! performing elliptic curve cryptography on the `secp256k1`
+//! curve.
 use secp256k1::{Secp256k1,Message,RecoveryId,RecoverableSignature};
 use secp256k1::key::{PublicKey,SecretKey};
 use std::convert::From;
-use std::ops::Deref;
-use rand::{Rng,OsRng};
+use rand::OsRng;
 use hash::keccak256::hash;
 use types::Result;
 
 
+// -------------------------- misc -----------------------------
+
+
 lazy_static! {
-    pub static ref SECP256K1: Secp256k1 = Secp256k1::new();
+    static ref SECP256K1: Secp256k1 = Secp256k1::new();
 }
 
 
@@ -55,7 +60,7 @@ fn _recover(msg: &[u8;32], sig: &Signature) -> Result<PublicKey> {
 // --------------------- ecc type defs ---------------------
 
 /// an ethereum-style address.
-#[derive(Hash, PartialEq, Eq)]
+#[derive(Debug,Clone,Hash,PartialEq, Eq)]
 pub struct Address([u8; 20]);
 
 impl_byte_array!(Address,20);
@@ -76,6 +81,7 @@ impl From<Public> for Address {
 pub struct Signature([u8;65]);
 
 impl_byte_array!(Signature,65);
+impl_byte_array_ext!(Signature,65);
 
 impl Signature {
     /// Split the signature into its `(v,r,s)` component
@@ -99,6 +105,7 @@ impl Signature {
 pub struct Public([u8;64]);
 
 impl_byte_array!(Public,64);
+impl_byte_array_ext!(Public,64);
 
 impl From<PublicKey> for Public {
     // convert the specified `PublicKey` object into
@@ -117,6 +124,7 @@ impl From<PublicKey> for Public {
 
 
 /// an ecc private-key on the `secp256k1` curve.
+#[derive(Debug,Clone,PartialEq,Eq)]
 pub struct Private([u8;32]);
 
 impl_byte_array!(Private,32);
@@ -136,6 +144,22 @@ impl From<SecretKey> for Private {
 pub struct KeyPair {
     public: PublicKey,
     secret: SecretKey
+}
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn signing() {
+    }
+
+    #[test]
+    fn addressing() {
+    }
+
+    #[test]
+    fn conversion() {
+    }
 }
 
 

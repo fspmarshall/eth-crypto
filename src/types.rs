@@ -1,12 +1,11 @@
 //! the `types` module contains any type definitions which are
 //! of general usefullness.
 use std::{io,result,error,fmt};
-use secp256k1::key::{PublicKey,SecretKey};
 use secp256k1;
-use ecc::SECP256K1;
-use hash::keccak256::hash;
 
 
+// -------------------------- misc --------------------------
+ 
 /// custom result alias.
 pub type Result<T> = result::Result<T,Error>;
 
