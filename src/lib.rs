@@ -8,8 +8,9 @@ extern crate lazy_static;
 
 #[macro_use]
 pub mod utils;
+
+pub mod prelude;
 pub mod types;
 pub mod hash;
 pub mod ecc;
-
 
