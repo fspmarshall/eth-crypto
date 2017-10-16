@@ -28,6 +28,29 @@ macro_rules! impl_byte_array {
                 &self.0
             }
         }
+
+        // implement the `LowerHex` trait to allow generation
+        // of lowercase hexadecimal representations.
+        impl $crate::std::fmt::LowerHex for $ident {
+            fn fmt(&self, f: &mut $crate::std::fmt::Formatter) -> $crate::std::fmt::Result {
+                for byte in self.as_ref().iter() {
+                    write!(f,"{:02x}",byte)?;
+                }
+                Ok(())
+            }
+        }
+
+
+        // implement the `UpperHex` trait to allow generation
+        // of uppercase hexadecimal representations.
+        impl $crate::std::fmt::UpperHex for $ident {
+            fn fmt(&self, f: &mut $crate::std::fmt::Formatter) -> $crate::std::fmt::Result {
+                for byte in self.as_ref().iter() {
+                    write!(f,"{:02X}",byte)?;
+                }
+                Ok(())
+            }
+        }
     }
 }
 

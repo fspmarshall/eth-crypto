@@ -26,12 +26,13 @@ pub mod ecc;
 /// the `prelude` module re-exports commonly used 
 /// functions & types for convenience of use.
 pub mod prelude {
-    
+    pub use self::v1::*;
+
     /// version one of the `prelude` module.
     pub mod v1 {
         pub use types::Result;
         pub use hash::keccak256::{hash,hash_many};
-        pub use ecc::{Signature,Address,Public,Private};
+        pub use ecc::{Signature,Address,Public,Private,keygen,recover,ecrecover};
     }
 
 }
