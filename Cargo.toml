@@ -2,6 +2,8 @@
 name = "eth-crypto"
 version = "0.1.0"
 authors = ["Forrest Marshall <forrest@mimirblockchain.solutions>"]
+license = "CC0-1.0"
+readme = "README.md"
 
 [dependencies]
 lazy_static = "0.2.9"
