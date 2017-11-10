@@ -1,6 +1,6 @@
 //! the `hash` submodule contains functions for hashing.  we're
 //! really burying the lead on this one.
-
+pub use tiny_keccak::Keccak;
 
 /// the `keccak-256` hashing function is the defacto hashing algorithm used
 /// in the Ethereum Virtual Machine.  we may add additional hashing
@@ -9,7 +9,6 @@
 /// `keccak-256` `hash` and `hash_many` function as the default hash 
 /// implementations. 
 pub mod keccak256 {
-    use tiny_keccak::Keccak;
 
     /// Wrapper-type representing the output of a `keccak-256` hash.
     #[derive(Debug,Clone,PartialEq,Eq)]
