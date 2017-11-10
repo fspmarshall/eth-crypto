@@ -11,6 +11,7 @@
 extern crate tiny_keccak;
 extern crate secp256k1;
 extern crate rand;
+extern crate hex;
 
 #[macro_use]
 extern crate lazy_static;
@@ -31,7 +32,7 @@ pub mod prelude {
     /// version one of the `prelude` module.
     pub mod v1 {
         pub use types::Result;
-        pub use hash::keccak256::{hash,hash_many};
+        pub use hash::keccak256::{Hash,hash,hash_many};
         pub use ecc::{Signature,Address,Public,Private,keygen,recover,ecrecover};
     }
 

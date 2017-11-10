@@ -51,6 +51,27 @@ macro_rules! impl_byte_array {
                 Ok(())
             }
         }
+
+
+        // implement the `FromHex` trait to allow conversion from a hexadecimal string.
+        impl $crate::hex::FromHex for $ident {
+            type Error = $crate::types::Error;
+            fn from_hex<T: AsRef<[u8]>>(s: T) -> $crate::std::result::Result<Self,Self::Error> {
+                let raw = s.as_ref();
+                let pfx = "0x".as_bytes();
+                let hex = if raw.starts_with(pfx) { &raw[2..] } else { raw };
+                if hex.len() == $len * 2 {
+                    let bytes: Vec<u8> = $crate::hex::FromHex::from_hex(hex)?;
+                    let mut buff = [0u8;$len];
+                    for (idx,val) in bytes.into_iter().enumerate() {
+                        buff[idx] = val;
+                    }
+                    Ok(buff.into())
+                } else {
+                    Err($crate::hex::FromHexError::InvalidHexLength.into())
+                }
+            }
+        }
     }
 }
 
@@ -84,6 +105,29 @@ macro_rules! impl_byte_array_ext {
 
         // manually flag type as `Eq` for full equivalence relations.
         impl $crate::std::cmp::Eq for $ident { }
+    }
+}
+
+
+
+#[cfg(test)]
+mod tests {
+    use hex::FromHex;
+    struct T4([u8;4]);
+    impl_byte_array!(T4,4);
+
+    #[test]
+    fn fromhex_succeed() {
+        let t4 = T4::from_hex("0xffaaffaa").unwrap();
+        assert_eq!(t4.as_ref(),&[0xff,0xaa,0xff,0xaa]);
+        let t4p = T4::from_hex("abcdef12").unwrap();
+        assert_eq!(t4p.as_ref(),&[0xab,0xcd,0xef,0x12]);
+    }
+
+    #[test]
+    #[should_panic]
+    fn fromhex_fail() {
+        let _ = T4::from_hex("0xabcdef").unwrap();
     }
 }
 
