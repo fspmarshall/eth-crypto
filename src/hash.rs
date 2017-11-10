@@ -10,6 +10,8 @@ pub use tiny_keccak::Keccak;
 /// implementations. 
 pub mod keccak256 {
 
+    use hash::Keccak;
+
     /// Wrapper-type representing the output of a `keccak-256` hash.
     #[derive(Debug,Clone,PartialEq,Eq)]
     pub struct Hash([u8;32]);
