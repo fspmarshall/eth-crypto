@@ -67,7 +67,7 @@ fn _recover(msg: &[u8;32], sig: &Signature) -> Result<PublicKey> {
 // --------------------- ecc type defs ---------------------
 
 /// an ethereum-style address.
-#[derive(Debug,Clone,Hash,PartialEq, Eq)]
+#[derive(Default,Debug,Clone,Hash,PartialEq, Eq)]
 pub struct Address([u8; 20]);
 
 impl_byte_array!(Address,20);
@@ -146,7 +146,7 @@ impl From<PublicKey> for Public {
 
 
 /// an ecc private-key on the `secp256k1` curve.
-#[derive(Debug,Clone,PartialEq,Eq)]
+#[derive(Default,Debug,Clone,PartialEq,Eq)]
 pub struct Private([u8;32]);
 
 impl_byte_array!(Private,32);

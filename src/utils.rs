@@ -89,6 +89,13 @@ macro_rules! impl_byte_array_ext {
             }
         }
 
+        // manuall implement `Default` trait for getting empty instances.
+        impl Default for $ident {
+            fn default() -> Self {
+                $ident([0u8;$len])
+            }
+        }
+
         // manually implemented `Debug` trait for printouts.
         impl $crate::std::fmt::Debug for $ident {
             fn fmt(&self, f: &mut $crate::std::fmt::Formatter) -> $crate::std::fmt::Result {
