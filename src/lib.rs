@@ -11,13 +11,12 @@
 extern crate tiny_keccak;
 extern crate secp256k1;
 extern crate rand;
-extern crate hex;
+
+#[macro_use]
+extern crate serde_hex;
 
 #[macro_use]
 extern crate lazy_static;
-
-#[macro_use]
-mod utils;
 
 pub mod types;
 pub mod hash;

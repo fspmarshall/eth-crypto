@@ -15,8 +15,7 @@ pub mod keccak256 {
     /// Wrapper-type representing the output of a `keccak-256` hash.
     #[derive(Default,Debug,Clone,PartialEq,Eq)]
     pub struct Hash([u8;32]);
-
-    impl_byte_array!(Hash,32);
+    impl_newtype_bytearray!(Hash,32);
 
     /// generate the `keccak-256` hash of a piece of data.
     /// if you are trying to hash multiple discontiguous

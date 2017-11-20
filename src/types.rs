@@ -2,7 +2,7 @@
 //! of general usefullness.
 use std::{io,result,error,fmt};
 use secp256k1;
-use hex;
+use serde_hex as hex;
 
 // -------------------------- misc --------------------------
  
@@ -18,7 +18,7 @@ pub enum Error {
     /// error raised during signature verification.
     SigErr(secp256k1::Error),
     /// error raised during parsing from a hexadecimal string.
-    HexErr(hex::FromHexError),
+    HexErr(hex::Error),
     /// error raised during normal io operations.
     IoErr(io::Error),
     /// generic error.
@@ -71,8 +71,8 @@ impl From<secp256k1::Error> for Error {
 
 
 // impl to allow implicit conversion from `hex::FromHexError`.
-impl From<hex::FromHexError> for Error {
-    fn from(err: hex::FromHexError) -> Self {
+impl From<hex::Error> for Error {
+    fn from(err: hex::Error) -> Self {
         Error::HexErr(err)
     }
 }
