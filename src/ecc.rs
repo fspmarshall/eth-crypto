@@ -69,9 +69,8 @@ fn _recover(msg: &[u8;32], sig: &Signature) -> Result<PublicKey> {
 /// an ethereum-style address.
 #[derive(Default,Debug,Clone,Hash,PartialEq, Eq)]
 pub struct Address([u8; 20]);
-
 impl_newtype_bytearray!(Address,20);
-
+impl_hex_array_strict!(Address,20);
 
 impl From<Public> for Address {
     fn from(key: Public) -> Self {
@@ -87,8 +86,8 @@ impl From<Public> for Address {
 
 /// an ethereum-style signature.
 pub struct Signature([u8;65]);
-
 impl_newtype_bytearray_ext!(Signature,65);
+impl_hex_array_strict!(Signature,65);
 
 impl Signature {
     /// Split the signature into its `(v,r,s)` component
@@ -126,6 +125,7 @@ impl From<RecoverableSignature> for Signature {
 /// an ecc public-key on the `secp256k1` curve.
 pub struct Public([u8;64]);
 impl_newtype_bytearray_ext!(Public,64);
+impl_hex_array_strict!(Public,64);
 
 impl From<PublicKey> for Public {
     // convert the specified `PublicKey` object into
@@ -147,6 +147,7 @@ impl From<PublicKey> for Public {
 #[derive(Default,Debug,Clone,PartialEq,Eq)]
 pub struct Private([u8;32]);
 impl_newtype_bytearray!(Private,32);
+impl_hex_array_strict!(Private,32);
 
 impl Private {
     /// sign the hash of some message.
