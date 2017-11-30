@@ -70,11 +70,12 @@ fn _recover(msg: &[u8;32], sig: &Signature) -> Result<PublicKey> {
 #[derive(Default,Debug,Clone,Hash,PartialEq, Eq)]
 pub struct Address([u8; 20]);
 impl_newtype_bytearray!(Address,20);
-impl_hex_array_strict!(Address,20);
+impl_serhex_bytearray!(Address,20);
 
 impl From<Public> for Address {
     fn from(key: Public) -> Self {
-        let hsh = hash(key.as_ref());
+        let key: &[u8] = key.as_ref();
+        let hsh = hash(key);
         let mut buf = [0u8;20];
         for (idx,val) in hsh[12..].into_iter().enumerate() {
             buf[idx] = *val;
@@ -87,7 +88,7 @@ impl From<Public> for Address {
 /// an ethereum-style signature.
 pub struct Signature([u8;65]);
 impl_newtype_bytearray_ext!(Signature,65);
-impl_hex_array_strict!(Signature,65);
+impl_serhex_bytearray!(Signature,65);
 
 impl Signature {
     /// Split the signature into its `(v,r,s)` component
@@ -125,7 +126,7 @@ impl From<RecoverableSignature> for Signature {
 /// an ecc public-key on the `secp256k1` curve.
 pub struct Public([u8;64]);
 impl_newtype_bytearray_ext!(Public,64);
-impl_hex_array_strict!(Public,64);
+impl_serhex_bytearray!(Public,64);
 
 impl From<PublicKey> for Public {
     // convert the specified `PublicKey` object into
@@ -147,7 +148,7 @@ impl From<PublicKey> for Public {
 #[derive(Default,Debug,Clone,PartialEq,Eq)]
 pub struct Private([u8;32]);
 impl_newtype_bytearray!(Private,32);
-impl_hex_array_strict!(Private,32);
+impl_serhex_bytearray!(Private,32);
 
 impl Private {
     /// sign the hash of some message.

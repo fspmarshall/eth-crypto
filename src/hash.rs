@@ -16,7 +16,7 @@ pub mod keccak256 {
     #[derive(Default,Debug,Clone,PartialEq,Eq)]
     pub struct Hash([u8;32]);
     impl_newtype_bytearray!(Hash,32);
-    impl_hex_array_strict!(Hash,32);
+    impl_serhex_bytearray!(Hash,32);
 
     /// generate the `keccak-256` hash of a piece of data.
     /// if you are trying to hash multiple discontiguous
